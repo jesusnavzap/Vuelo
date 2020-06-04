@@ -1,0 +1,97 @@
+<html>
+
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <!--<script src="controller.js"></script>-->
+</head>
+
+<body>
+    <div ng-app="myApp" ng-controller="customersCtrl">
+        <h5>Vuelos totales: {{getTotalVuelos()}}</h5>
+
+        <p>
+            Tipo de billete:
+            <select name="Billete">
+                <option>Solo de ida</option>
+                <option>Ida y vuelta</option>
+            </select>
+        </p>
+
+        <p>
+            <!--Posible siguiente paso desplegable con posibles destino y origen-->
+            Origen:
+            <input type="text" ng-model="origen">
+            Destino:
+            <input type="text" ng-model="destino">
+            <button class="add-btn" ng-click="Buscarvuelos()">
+                <h5>Buscar vuelos</h5>
+            </button>
+        </p>
+         <table id="dtBasicExample" class="table" cellspacing="0" width="100%">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Vuelo</th>
+                    <th scope="col">Origen</th>
+                    <th scope="col">Destino</th>
+                    <th scope="col">Fecha de salida</th>
+                    <th scope="col">Fecha de llegada</th>
+                    <th scope="col">Bussiness</th>
+                    <th scope="col">optima</th>
+                    <th scope="col">economy</th>
+                </tr>
+
+            </thead>
+            <tbody>
+                <tr ng-repeat="x in myData | filter:{ origen: origen, destino: destino, salida:salida, llegada:llegada}">
+                    <td>{{ x.vuelo }}</td>
+                    <td>{{x.origen}}</td>
+                    <td>{{x.destino}}</td>
+                    <td>{{cambioHora(x.salida)}}</td>
+                    <td>{{cambioHora(x.llegada)}}</td>
+                    <td>{{x.bussiness+"€"}}</td>
+                    <td>{{x.optima+"€"}}</td>
+                    <td>{{x.economy+"€"}}</td>
+
+                </tr>
+
+            </tbody>
+        </table>
+
+
+
+    </div>
+    <script>
+        $(document).ready(function() {
+            $('#dtBasicExample').DataTable();
+            $('.dataTables_length').addClass('bs-select');
+        });
+    </script>
+    <script>
+        
+        angular.module('myApp', [])
+            .controller('customersCtrl', function($scope, $http) {
+                $scope.Buscarvuelos = function() {
+                    $http.get("vuelos.json").then(function(response) {
+                        $scope.myData = response.data.vuelos;
+                    });
+                };
+                $scope.getTotalVuelos = function() {
+                    return $scope.myData.length;
+                };
+
+                $scope.cambioHora = function(horaJ) {
+                    var date = new Date(horaJ);
+                    //var tempsin = date.split("GMT");
+                    //return tempsin[0];
+                    return date;
+                };
+
+            });
+    </script>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+</body></html>
