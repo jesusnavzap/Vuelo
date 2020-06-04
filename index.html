@@ -8,10 +8,15 @@
 <body>
     <div ng-app="myApp" ng-controller="customersCtrl">
         <h5>Vuelos totales: {{getTotalVuelos()}}</h5>
-        
+        <p>
+            <!--Posible siguiente paso desplegable con posibles destino y origen-->
+            Origen:
+            <input type="text" ng-model="origen">
+            Destino:
+            <input type="text" ng-model="destino">
+        </p>
         <ul>
-            <!- siguiente paso por angular pasarle las variables para el filtrado-->
-            <li ng-repeat="x in myData | filter:{ origen:'BARCELONA',destino:'VALENCIA'}">
+            <li ng-repeat="x in myData | filter:{ origen: origen, destino: destino}">
                 {{ x.vuelo + ', ' + x.origen + ', ' + x.destino }}
             </li>
         </ul>
@@ -24,8 +29,11 @@
                 $http.get("vuelos.json").then(function(response) {
                     $scope.myData = response.data.vuelos;
                 });
-            
-                $scope.getTotalVuelos= function() {
+
+                $scope.getTotalVuelos = function() {
+                    return $scope.myData.length;
+                };
+                $scope.buscarVuelo = function() {
                     return $scope.myData.length;
                 };
             });
