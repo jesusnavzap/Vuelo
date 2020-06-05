@@ -3,7 +3,7 @@
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-    <!--<script src="controller.js"></script>-->
+    <script src="js/controller.js"></script>
 </head>
 
 <body>
@@ -22,7 +22,10 @@
             <input type="text" ng-model="origen">
             Destino:
             <input type="text" ng-model="destino">
-
+            Fecha de salida:
+            <input type="date" value="" ng-model="salida">
+            Fecha de llegada:
+			<input type="date" value="" ng-model="llegada">
             <button class="add-btn" ng-click="Buscarvuelos()">
                 <h5>Buscar vuelos</h5>
             </button>
@@ -42,7 +45,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in myData | filter:{ origen: origen, destino: destino, salida:salida, llegada:llegada} | limitTo:10 ">
+                    
+                    <tr ng-repeat="x in myData | filter:{ origen: origen, destino: destino, salida:formatearFecha(salida), llegada:formatearFecha(llegada)} | limitTo:10 ">
                         <td>{{x.vuelo}}</td>
                         <td>{{x.origen}}</td>
                         <td>{{x.destino}}</td>
@@ -58,26 +62,7 @@
 
 
     </div>
-    <script>
-        angular.module('myApp', [])
-            .controller('customersCtrl', function($scope, $http) {
-                $scope.Buscarvuelos = function() {
-                    $http.get("vuelos.json").then(function(response) {
-                        $scope.myData = response.data.vuelos;
-                    });
-                };
-                $scope.getTotalVuelos = function() {
-                    return $scope.myData.length;
-                };
-
-                $scope.cambioHora = function(horaJ) {
-                    var fecha = new Date(horaJ);  
-                    //return tempsin[0];
-                    return fecha + "";
-                };
-
-            });
-    </script>
+    
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
