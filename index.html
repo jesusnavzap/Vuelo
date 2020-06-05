@@ -3,7 +3,7 @@
 <head>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
-    <!--<script src="controller.js"></script>-->
+    
 </head>
 
 <body>
@@ -19,15 +19,21 @@
         <p>
             <!--Posible siguiente paso desplegable con posibles destino y origen-->
             Origen:
-            <input type="text" ng-model="origen">
+            <input type="text" ng-model="origen" value="">
             Destino:
-            <input type="text" ng-model="destino">
-
+            <input type="text" ng-model="destino" value="">
+            Fecha de salida:
+            <input type="date" value="" ng-model="salida">
+            Fecha de llegada:
+            <input type="date" value="" ng-model="llegada">
             <button class="add-btn" ng-click="Buscarvuelos()">
                 <h5>Buscar vuelos</h5>
             </button>
         </p>
-        <div class="container">
+        <div class="container" ng-if="origen == ''">
+            <h5>Elija un origen</h5>
+        </div>
+        <div class="container" ng-if="origen != ''">
             <table id="dtBasicExample" class="table" cellspacing="0" width="100%">
                 <thead class="thead-dark">
                     <tr>
@@ -42,7 +48,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr ng-repeat="x in myData | filter:{ origen: origen, destino: destino, salida:salida, llegada:llegada} | limitTo:10 ">
+
+                    <tr ng-repeat="x in myData | filter:{ origen: origen, destino: destino, salida:formatearFecha(salida), llegada:formatearFecha(llegada)} | limitTo:10 ">
                         <td>{{x.vuelo}}</td>
                         <td>{{x.origen}}</td>
                         <td>{{x.destino}}</td>
@@ -58,20 +65,41 @@
 
 
     </div>
+    
     <script>
         angular.module('myApp', [])
             .controller('customersCtrl', function($scope, $http) {
-                $scope.Buscarvuelos = function() {
+
+                $scope.Buscarvuelos = function(origen, destino, salida, llegada) {
                     $http.get("vuelos.json").then(function(response) {
                         $scope.myData = response.data.vuelos;
+
                     });
                 };
                 $scope.getTotalVuelos = function() {
                     return $scope.myData.length;
                 };
 
+                $scope.formatearFecha = function(fecha) {
+
+                    if (fecha != null) {
+                        var d = new Date(fecha),
+                            month = '' + (d.getMonth() + 1),
+                            day = '' + d.getDate(),
+                            year = d.getFullYear();
+
+                        if (month.length < 2)
+                            month = '0' + month;
+                        if (day.length < 2)
+                            day = '0' + day;
+
+                        return [year, month, day].join('-');
+                    }
+
+                }
+
                 $scope.cambioHora = function(horaJ) {
-                    var fecha = new Date(horaJ);  
+                    var fecha = new Date(horaJ);
                     //return tempsin[0];
                     return fecha + "";
                 };
