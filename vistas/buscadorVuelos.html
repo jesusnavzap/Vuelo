@@ -1,0 +1,55 @@
+<p>
+	Tipo de billete:
+	<select name="Billete">
+		<option>Solo de ida</option>
+		<option>Ida y vuelta</option>
+	</select>
+</p>
+
+<p>
+	<!--Posible siguiente paso desplegable con posibles destino y origen-->
+	Origen:
+	<input type="text" ng-model="origen">
+	Destino:
+	<input type="text" ng-model="destino">
+	Fecha de salida:
+	<input type="date" value="" ng-model="salida">
+	Fecha de llegada:
+	<input type="date" value="" ng-model="llegada">
+	<button class="add-btn" ng-click="Buscarvuelos()">
+		<h5>Buscar vuelos</h5>
+	</button>
+</p>
+<div class="container">
+	<table id="dtBasicExample" class="table" cellspacing="0" width="100%">
+		<thead class="thead-dark">
+			<tr>
+				<th scope="col">Vuelo</th>
+				<th scope="col">Origen</th>
+				<th scope="col">Destino</th>
+				<th scope="col">Fecha de salida</th>
+				<th scope="col">Fecha de llegada</th>
+				<th scope="col">Bussiness</th>
+				<th scope="col">Optima</th>
+				<th scope="col">Economy</th>
+				<th scope="col">Comprar</th>
+			</tr>
+		</thead>
+		<tbody>
+
+			<tr ng-repeat="x in myData | filter:{ origen: origen, destino: destino, salida:formatearFecha(salida), llegada:formatearFecha(llegada)} | limitTo:10 ">
+				<td>{{x.vuelo}}</td>
+				<td>{{x.origen}}</td>
+				<td>{{x.destino}}</td>
+				<td>{{cambioHora(x.salida)}}</td>
+				<td>{{cambioHora(x.llegada)}}</td>
+				<td>{{x.bussiness+"€"}}</td>
+				<td>{{x.optima+"€"}}</td>
+				<td>{{x.economy+"€"}}</td>
+				<td><a href="/#!/view/{{x}}">Seleccionar</a></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+

@@ -1,10 +1,22 @@
-<<<<<<< HEAD
-angular.module("vuelos", [])
-	.controller("busqueda", function ($scope) {
-	$scope.algo = "";
-})
-=======
-angular.module('myApp', [])
+angular.module('myApp', ['ngRoute'])
+	.config(function ($routeProvider) {
+		$routeProvider
+			.when('/', {
+				controller: 'customersCtrl',
+				templateUrl: 'vistas/buscadorVuelos.html'
+			})
+			.when('/index.html', {
+				controller: 'customersCtrl',
+				templateUrl: 'vistas/buscadorVuelos.html'
+			})
+			.when('/view/:vueloSeleccionado', {
+				controller: 'vueloCtrl',
+				templateUrl: 'vistas/vueloView.html'
+			})
+			.otherwise({
+				redirectTo: '/'
+			});
+	})
 	.controller('customersCtrl', function ($scope, $http) {
 
 
@@ -30,7 +42,7 @@ angular.module('myApp', [])
 					month = '0' + month;
 				if (day.length < 2)
 					day = '0' + day;
-				
+
 				return [year, month, day].join('-');
 			}
 
@@ -42,5 +54,23 @@ angular.module('myApp', [])
 			return fecha + "";
 		};
 
-	});
->>>>>>> jesus
+		$scope.seleccionarVuelo = function (vuelo) {
+			console.log(vuelo);
+		}
+
+	}).controller('vueloCtrl', function($scope, $routeParams){
+		$scope.vueloSelec = JSON.parse($routeParams.vueloSeleccionado);
+		console.log($scope.vueloSelec);
+});
+
+
+
+
+
+
+
+
+
+
+
+
