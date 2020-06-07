@@ -1,2 +1,28 @@
 <p>El vuelo seleccionado es: </p>
-<p>{{vueloSelec}}</p>
+<div>
+
+    <p>Origen: {{vueloSelec.origen}}</p>
+    <p>Destino: {{vueloSelec.destino}}</p>
+    <p>Salida: {{formatearFecha(vueloSelec.salida)}}</p>
+    <p>Llegada: {{formatearFecha(vueloSelec.llegada)}}</p>
+
+    <select ng-model="claseSelec" ng-options="item as item.tipo for item in opcionesVuelo">
+        <option value="">Por favor escoge una clase</option>
+    </select> <br>
+    
+    <span>Opcion escogida: {{claseSelec.precio}}</span> <br>
+    
+    <select ng-model="idaVuelta" ng-options="item as item.tipo for item in opcionesIdaVuelta" ng-init="idaVuelta = opcionesIdaVuelta[0]">
+        
+    </select> <br>
+    
+    <div>
+        <button ng-click="addBillete(1)"> + </button> {{numeroDeBilletes}} <button ng-click="addBillete(-1)"> - </button>
+    </div>
+    <span>Opcion escogida: {{idaVuelta.valor}}</span> <br>
+    
+    <span>Precio final: {{getPrecioFinal() + '€'}}</span>
+    
+
+
+</div>
