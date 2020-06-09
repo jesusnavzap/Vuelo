@@ -16,9 +16,9 @@ angular.module('myApp', ['ngRoute'])
     .controller('customersCtrl', function ($scope, $http) {
 
         $scope.Buscarvuelos = function () {
+            $scope.bandera = 1;
             $http.get("js/vuelos.json").then(function (response) {
-                $scope.myData = response.data.vuelos;
-
+                $scope.myData = response.data.vuelos;                
             });
         };
 
